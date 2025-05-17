@@ -1,93 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tic Tac Toe</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .container { max-width: 400px; margin: auto; padding: 20px; }
-        .board { display: none; grid-template-columns: repeat(3, 100px); grid-gap: 5px; margin: 20px auto; }
-        .cell { width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 1px solid black; cursor: pointer; background-color: pink; }
-        .message { margin: 10px; font-size: 20px; }
-        h1 { font-family: 'Comic Sans MS', cursive; }
-        .winner { background-color: purple; color: white; }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <div class="container">
-        <h1>Tic Tac Toe</h1>
-        <div id="player-inputs">
-            <label>Player 1 <input type="text" id="player-1" placeholder="enter name"></label>
-            <label>Player 2 <input type="text" id="player-2" placeholder="enter name"></label>
-            <button id="submit">Start Game</button>
+        <!-- Fixed IDs for Cypress compatibility -->
+        <div class="input-section">
+            <input type="text" id="player1" placeholder="Enter Player 1 Name" />
+            <input type="text" id="player2" placeholder="Enter Player 2 Name" />
+            <button id="submit">Submit</button>
         </div>
-        <div class="message" id="message"></div>
-        <div class="board" id="board">
-            <div class="cell" id="1"></div>
-            <div class="cell" id="2"></div>
-            <div class="cell" id="3"></div>
-            <div class="cell" id="4"></div>
-            <div class="cell" id="5"></div>
-            <div class="cell" id="6"></div>
-            <div class="cell" id="7"></div>
-            <div class="cell" id="8"></div>
-            <div class="cell" id="9"></div>
+
+        <div class="game-section hidden">
+            <h1>Tic Tac Toe</h1>
+            <div class="message"></div>
+            <div class="board">
+                <!-- 9 cells created using JS -->
+            </div>
+            <button id="restart" class="hidden">Restart</button>
         </div>
     </div>
-    <script>
-        document.getElementById("submit").addEventListener("click", function() {
-            let player1 = document.getElementById("player-1").value;
-            let player2 = document.getElementById("player-2").value;
-            if (player1 && player2) {
-                document.getElementById("player-inputs").style.display = "none";
-                document.getElementById("board").style.display = "grid";
-                document.getElementById("message").innerText = `${player1}, you're up!`;
-                startGame(player1, player2);
-            }
-        });
-        
-        function startGame(player1, player2) {
-            let currentPlayer = player1;
-            let symbol = "X";
-            let board = Array(9).fill(null);
-            let cells = document.querySelectorAll(".cell");
-            
-            cells.forEach(cell => {
-                cell.addEventListener("click", function() {
-                    if (!this.innerText) {
-                        this.innerText = symbol;
-                        board[this.id - 1] = symbol;
-                        if (checkWinner(board, symbol)) {
-                            document.getElementById("message").innerText = `${currentPlayer}, congratulations you won!`;
-                            highlightWinner(board, symbol);
-                            return;
-                        }
-                        symbol = symbol === "X" ? "O" : "X";
-                        currentPlayer = currentPlayer === player1 ? player2 : player1;
-                        document.getElementById("message").innerText = `${currentPlayer}, you're up!`;
-                    }
-                });
-            });
-        }
-        
-        function checkWinner(board, symbol) {
-            const winPatterns = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
-            ];
-            return winPatterns.find(pattern => pattern.every(index => board[index] === symbol));
-        }
-        
-        function highlightWinner(board, symbol) {
-            const winPattern = checkWinner(board, symbol);
-            if (winPattern) {
-                winPattern.forEach(index => {
-                    document.getElementById((index + 1).toString()).classList.add("winner");
-                });
-            }
-        }
-    </script>
+
+    <script src="script.js"></script>
 </body>
 </html>
